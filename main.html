@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="main.css">
+    <title>PhysioNimb</title>
+</head>
+<body>
+  <div id="content1">
+  <div class="left animate__animated animate__fadeInLeftBig animate__delay-.5s">
+    <h1 class="display-3" style="font-weight: 600;">PhysioNimb</h1>
+    <p id="title" class="display-1">Let's have a look at how healthy you need to be</p><br>
+    <p id="subtitle" class="display-4">Easy workouts and homemade diet</p>
+  </div>
+  <div class="right animate__animated animate__slideInDown animate__delay-2s">
+    <small style="margin-left: 58%; font-weight: 600; display: inline;" id="smalltext" class="form-text animate__animated animate__fadeInRightBig animate__delay-4s">Don't know your BMI?<a onclick="bmicalc()" style="color: white; cursor: pointer;"> Click here!</a></small>
+    <h2 id="formheading" class="display-5">Enter your details:</h1>
+      <input type="text" id="name" placeholder="Name" style="background-color: rgb(204, 201, 201); border-bottom: 5px solid black; border-top: 0px; border-left: 0px; border-right: 0px;">
+      <input type="number" min="0" max="100" id="bmi" placeholder="BMI" style="background-color: rgb(204, 201, 201); border-bottom: 5px solid black; border-top: 0px; border-left: 0px; border-right: 0px;">
+      <button type="button" id="formsubmission" onclick="mainaction()" class="btn btn-outline-light">Submit</button>
+  </div>
+  </div>
+  <div id="content2">
+    <h1 class="display-2" id="titlename"></h1>
+    <!--explain clearly about viewing style of page and cals-->
+  <div id="lifestylecard">
+      <h5 class="display-3" id="lifetitle" style="text-align: left; font-weight: 400; margin-right: 4%; display: inline;">Overview</h5>
+      <p id="lifestyletext" style="display: none; text-align: left; color: white; width: 70%; transform: translateY(30%); margin-bottom: 3%;">
+        <span id="underweight" style="display: none;">You are underweight. Your BMI is <span id="bmiun"></span>.
+        Weighing too little can contribute to a weakened immune system, fragile bones and feeling tired.
+        A recent review of studies found a connection between increased infections and being 
+        underweight. The researchers noted their difficulty in determining if this is a result 
+        of being underweight or if it has more to do the underlying causes for being underweight. 
+        For example, malnourishment may lead to decreased immune function and also cause people to 
+        be underweight. More research is needed to fully understand the connection between weight 
+        and immune function.</span>
+        <span id="normal" style="display: none;">You are normal. Your BMI is <span id="bminormal"></span>.
+        Reaching and maintaining a healthy weight is important for overall health and can help 
+        you prevent and control many diseases and conditions. If you are overweight or obese, 
+        you are at higher risk of developing serious health problems, including heart disease, 
+        high blood pressure, type 2 diabetes, gallstones, breathing problems, and certain 
+        cancers. That is why maintaining a healthy weight is so important: It helps you lower 
+        your risk for developing these problems, helps you feel good about yourself, and gives 
+        you more energy to enjoy life.</span>
+        <span id="overweight" style="display: none;">You are overweight. Your BMI is <span id="bmiover"></span>.
+        Obesity is bad news for both body and mind. Not only can it make someone feel tired 
+        and uncomfortable, carrying extra weight puts added stress on the body, especially the 
+        bones and joints of the legs. Kids and teens who are overweight are more likely to 
+        develop diabetes and other health problems. And overweight adults have a higher chance 
+        of getting heart disease.</span>
+        <span id="obese" style="display: none;">You are obese. Your BMI is <span id="bmiobese"></span>. 
+        Obesity is bad news for both body and mind. Not only can it make someone feel tired and 
+        uncomfortable, carrying extra weight puts added stress on the body, especially the bones 
+        and joints of the legs. Kids and teens who are overweight are more likely to develop 
+        diabetes and other health problems. And overweight adults have a higher chance of getting 
+        heart disease.</span>
+        The below tips can be used carefully to gradually improve your lifestyle towards a healthier stage.
+        The data provided below is an esitmate and should be verified on internet before implementing
+        it. What this will do is help you provide a blue print and a direction where you can look into.
+      </p>
+    </div>
+  <div class="card" id="calprogress" style="display: block; max-width: 88rem; margin-top: 2%;">
+    <div class="card-horizontal"  style="display: flex;">
+      <div class="progressbar-js-circle rounded p-3">
+        <svg viewBox="0 0 100 100" style="display: block; width: 100%;">
+          <path d="M 50,50 m 0,-48 a 48,48 0 1 1 0,96 a 48,48 0 1 1 0,-96" stroke="#eee" stroke-width="4" fill-opacity="0"></path>
+          <path id="calfiller" d="M 50,50 m 0,-48 a 48,48 0 1 1 0,96 a 48,48 0 1 1 0,-96" stroke="rgb(108,185,124)" stroke-width="4" fill-opacity="0" style="stroke-dasharray: 301.635, 301.635; stroke-dashoffset: 199.079;"></path>
+      </svg>
+      <div class="progressbar-text" id="calintm"></div><br>
+      <div class="progressbar-text" id="calintf"></div>
+      </div>
+    <div id="caltext" class="card-body" style="border-left: 2px solid black;" onmouseover="slidein()">
+      <h5 class="card-title" style="text-align: center; margin-bottom: 8%; font-weight: 400;">Calories needed</h5>
+      <div class="row">
+        <div class="col-6">
+      <p class="card-text" style="text-align: center; font-weight: 600;">Proteins</p>
+    </div>
+    <div class="col-6">
+      <p class="card-text" style="text-align: center; font-weight: 600;">Fats</p>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+      <p class="card-text" style="text-align: center;"><img src="https://img.icons8.com/ios/50/000000/user-male-circle.png"/></p>
+      <p class="card-text" id="maleprotein" style="text-align: center;"></p>
+      <p class="card-text" style="text-align: center;"><img src="https://img.icons8.com/ios/50/000000/user-female-circle.png"/></p>
+      <p class="card-text" id="femaleprotein" style="text-align: center;"></p>
+    </div>
+    <div class="col-6">
+      <p class="card-text" style="text-align: center;"><img src="https://img.icons8.com/ios/50/000000/user-male-circle.png"/></p>
+      <p class="card-text" id="malefat" style="text-align: center;">456m</p>
+      <p class="card-text" style="text-align: center;"><img src="https://img.icons8.com/ios/50/000000/user-female-circle.png"/></p>  
+      <p class="card-text" id="femalefat" style="text-align: center;">456f</p>
+    </div>
+    </div>
+    </div>
+  </div>
+  </div>
+  <h5 class="display-3" id="exercise" style="text-align: right; font-weight: 400; margin-right: 5%; margin-top: 6%;">Exercises</h5>
+  <span style="margin-left: 5%; font-weight: 400;">Home </span><label class="switch"><input type="checkbox" id="toggleslider" onclick="hidehome()"><span class="slider round"></span></label><span style="font-weight: 400;"> Gym</span>  
+  <div class="card-group" id="underexhome" style="display: none;">
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/sport-1815737_1280.jpg" alt="wide press">
+        <div class="card-body">
+          <h5 class="card-title">Wide press ups</h5>
+          <p class="card-text">Wide press ups offer a challenging upper-body workout that targets the muscles in your 
+            chest, shoulders, and upper arms. This press up variation can also help 
+            build your core strength, and it may help protect your back, too.</p>
+          <p class="card-text"><small class="text-muted">7 calories burned per min</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/sport-1685975_1280.jpg" alt="spiderman press">
+        <div class="card-body">
+          <h5 class="card-title">Spiderman press ups</h5>
+          <p class="card-text">The movement targets the muscles of the core, including the deep
+            stabilizing muscles of the abdomen and back, the "six-pack" muscles of the 
+            rectus abdominis, and the obliques.</p>
+          <p class="card-text"><small class="text-muted">10 calories burned per min</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="https://image.shutterstock.com/image-photo/diamond-pushups-young-man-doing-260nw-570574078.jpg" alt="diamond press">
+        <div class="card-body">
+          <h5 class="card-title">Diamond press ups</h5>
+          <p class="card-text">The main muscles that are worked during the exercise are the triceps,
+            chest and shoulders.</p>
+          <p class="card-text"><small class="text-muted">7 calories burned per min</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/sport-1815736_1280.jpg" alt="one arm press">
+        <div class="card-body">
+          <h5 class="card-title">One arm press ups</h5>
+          <p class="card-text">The muscles involved in a one-arm push-up are the chest, 
+            shoulders, triceps, abs, and to a lesser extent, trapezius, rhomboids, 
+            teres major/minor, and infraspinatus.</p>
+          <p class="card-text"><small class="text-muted">0.5 calories burned per press up</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="https://media.istockphoto.com/photos/male-athlete-pushups-lying-down-workout-training-chest-muscles-summer-picture-id1191451888?k=6&m=1191451888&s=170667a&w=0&h=NKXyS2woxWsvlCx5BaZL-ATWZiD8KPKcfJKKurae2WQ=" alt="stair press">
+        <div class="card-body">
+          <h5 class="card-title">Stair press ups</h5>
+          <p class="card-text">The incline position primarily works your chest muscles, 
+            but you'll also need to engage your core muscles to protect your back.</p>
+          <p class="card-text"><small class="text-muted">7 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="https://image.freepik.com/free-photo/woman-doing-knee-push-ups-exercise-park_144962-8984.jpg" alt="knee press">
+        <div class="card-body">
+          <h5 class="card-title">Knee down push ups</h5>
+          <p class="card-text">Knee push-ups strengthen your pecs (chest), shoulders, arms and abs</p>
+          <p class="card-text"><small class="text-muted">7 calories per minute</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="card-group" id="underexgym" style="display: none;">
+      <div class="card excard gw">
+        <img class="card-img-top" src="https://thumbs.dreamstime.com/z/exercising-shrugs-barbell-bodybuilding-target-muscles-marked-red-initial-final-steps-43932412.jpg" alt="barbell shrugs">
+        <div class="card-body">
+          <h5 class="card-title">Barbell shrugs</h5>
+          <p class="card-text">The main muscles that shoulder shrugs target are the trapezius
+            muscles. These muscles are located on either side of your neck. They control the 
+            movement of your shoulder blades as well as your upper back and neck.</p>
+          <p class="card-text"><small class="text-muted">2 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="./pics/sport-3690783_1280.jpg" alt="Raises">
+        <div class="card-body">
+          <h5 class="card-title">Dumbbell raises</h5>
+          <p class="card-text">Dumbbell raises primarily target the front of the shoulders, 
+            known as the anterior deltoid. This muscle is used in shoulder flexion. Front 
+            dumbbell raises also work the lateral (side) deltoid and the serratus anterior, 
+            along with the upper and lower trapezius, clavicular part of the pectoralis major, 
+            and biceps.</p>
+          <p class="card-text"><small class="text-muted">2 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="./pics/deadlift-71284_1280.jpg" alt="deadlift">
+        <div class="card-body">
+          <h5 class="card-title">Deadlift</h5>
+          <p class="card-text">Deadlifts train multiple muscle groups including the: hamstrings,
+            glutes, back, hips, core and trapezius.</p>
+          <p class="card-text"><small class="text-muted">60 calories burnt per circuit</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="https://thumbs.dreamstime.com/z/bent-over-barbell-row-step-step-instructions-stand-facing-your-legs-slightly-wider-than-shoulder-width-apart-holding-63247396.jpg" alt="bent over rows">
+        <div class="card-body">
+          <h5 class="card-title">Bent over rows</h5>
+          <p class="card-text">The main muscles used are the latissimus dorsi (lats), which 
+            run down the sides of your upper back, trapezius (traps), and rhomboids 
+            (upper middle back). The barbell bent-over row also uses the back, glutes and 
+            legs to stabilise the body too.</p>
+          <p class="card-text"><small class="text-muted">150 calories per circuit</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="./pics/weights-652486_1280.jpg" alt="bench press">
+        <div class="card-body">
+          <h5 class="card-title">Bench press</h5>
+          <p class="card-text">This exercise is done lying down on a flat bench and pressing a 
+            barbell up and down at chest height. It works the pectoral muscles, shoulders, and arms.</p>
+          <p class="card-text"><small class="text-muted">40 calories per set</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="card-group" id="overexhome" style="display: none;">
+      <div class="card excard hw">
+        <img class="card-img-top" src="https://image.freepik.com/free-photo/woman-doing-knee-push-ups-exercise-park_144962-8984.jpg" alt="knee press">
+        <div class="card-body">
+          <h5 class="card-title">Knee down push ups</h5>
+          <p class="card-text">Knee push-ups strengthen your pecs (chest), shoulders, arms and abs</p>
+          <p class="card-text"><small class="text-muted">7 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/sunset-4799030_1280.jpg" alt="star jump">
+        <div class="card-body">
+          <h5 class="card-title">Star jumps</h5>
+          <p class="card-text">This exercise mainly works your glutes, your quads, and hip 
+            flexors. But they are a compound movement, so they pretty much work every muscle 
+            in your body to some extent.</p>
+          <p class="card-text"><small class="text-muted">10 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/people-2578021_1280.jpg" alt="jumping lunge">
+        <div class="card-body">
+          <h5 class="card-title">Jumping lunges</h5>
+          <p class="card-text">When performing a jump lunge, you'll simultaneously work all of 
+            the lower-body muscles targeted by a standard lunge, including the quads, glutes, 
+            hamstrings and calves.</p>
+          <p class="card-text"><small class="text-muted">8 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">  
+        <img class="card-img-top" src="https://bootylabinc.com/wp-content/uploads/2020/05/EKP2038_websize.jpg" alt="leg hip thrust">
+        <div class="card-body">
+          <h5 class="card-title">Single leg hip thrust</h5>
+          <p class="card-text">Single-leg hip thrust is a calisthenics exercise that primarily 
+            targets the glutes and to a lesser degree also targets the calves, groin, hamstrings, 
+            hip flexors, lower back and quads.</p>
+          <p class="card-text"><small class="text-muted">9 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/woman-1456950_1280.jpg" alt="Cross lunges">
+        <div class="card-body">
+          <h5 class="card-title">Cross lunge combo</h5>
+          <p class="card-text">crossover lunge is a free weights exercise that primarily 
+            targets the quads and to a lesser degree also targets the glutes, hip flexors and hamstrings.</p>
+          <p class="card-text"><small class="text-muted">8 calories per minute</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="card-group" id="overexgym" style="display: none;">
+      <div class="card excard gw">
+        <img class="card-img-top" src="https://image.shutterstock.com/image-vector/woman-doing-burpee-push-step-260nw-1358162885.jpg" alt="burpee">
+        <div class="card-body">
+          <h5 class="card-title">Burpee</h5>
+          <p class="card-text">With burpees, the focus is on a full-body calisthenics workout 
+            that aims to build muscle strength and endurance in both your lower and upper body.</p>
+          <p class="card-text"><small class="text-muted">10-15 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="./pics/skipping-379267_1280.jpg" alt="skipping">
+        <div class="card-body">
+          <h5 class="card-title">Jumping rope</h5>
+          <p class="card-text">Your muscles—the gastrocnemius, quadriceps, hamstrings, glutes, abdominals, forearms, and deltoids—get a workout.</p>
+          <p class="card-text"><small class="text-muted">10+ calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="./pics/kettlebells-3670543_1280.jpg" alt="med ball">
+        <div class="card-body">
+          <h5 class="card-title">Med ball slams</h5>
+          <p class="card-text">A med ball works your shoulders, triceps, pecs, calves, back and core (especially your abdominals).</p>
+          <p class="card-text"><small class="text-muted">105 calories per set</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="./pics/barbell-3895455_1280.jpg" alt="weight squat">
+        <div class="card-body">
+          <h5 class="card-title">Back squat</h5>
+          <p class="card-text">In addition to the lower body, the squat also targets your core 
+            muscles. These muscles include the rectus abdominis, obliques, transverse abdominis, 
+            and erector spinae. If you do a back squat or overhead squat, you'll also work the 
+            muscles in your shoulders, arms, chest, and back.</p>
+          <p class="card-text"><small class="text-muted">35 calories per set</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="./pics/training-828764_1280.jpg" alt="ropes">
+        <div class="card-body">
+          <h5 class="card-title">Battle rope</h5>
+          <p class="card-text">You'll train the muscles in your upper back, arms, abs, back, 
+            glutes and if you incorporate jumps, lunges, and squats, you can also work your legs!</p>
+          <p class="card-text"><small class="text-muted">10 calories per minute</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="card-group" id="obexhome" style="display: none;">
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/swimming-78112_1280.jpg" alt="swimming">
+        <div class="card-body">
+          <h5 class="card-title">Swimming</h5>
+          <p class="card-text">Pecs, lasts, quads, hamstrings, calves, shoulders, biceps, and triceps are all in play during swimming.</p>
+          <p class="card-text"><small class="text-muted">500 calories per hour</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/feet-3483426_1280.jpg" alt="walking">
+        <div class="card-body">
+          <h5 class="card-title">Walking</h5>
+          <p class="card-text">We use a lot of muscles when we walk. The main ones are the the core muscles and leg muscles.</p>
+          <p class="card-text"><small class="text-muted">200-600 calories per hour</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/skipping-379267_1280.jpg" alt="skipping">
+        <div class="card-body">
+          <h5 class="card-title">Jumping rope</h5>
+          <p class="card-text">Your muscles—the gastrocnemius, quadriceps, hamstrings, glutes, abdominals, forearms, and deltoids—get a workout.</p>
+          <p class="card-text"><small class="text-muted">10+ calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/yoga-3053487_1280.jpg" alt="stretch">
+        <div class="card-body">
+          <h5 class="card-title">Stretching</h5>
+          <p class="card-text">When stretching, focus on the major areas of your body that help 
+            with mobility, such as your calves, hamstrings, hip flexors, and quadriceps. For 
+            upper-body relief, try moves that stretch the shoulders, neck, and lower back.</p>
+          <p class="card-text"><small class="text-muted">Usually for relaxing</small></p>
+        </div>
+      </div>
+      <div class="card excard hw">
+        <img class="card-img-top" src="./pics/mountain-biking-1210066_1280.jpg" alt="Cycling">
+        <div class="card-body">
+          <h5 class="card-title">Cycling</h5>
+          <p class="card-text">The main muscles at work in cycling are the quadriceps and 
+            hamstrings in the upper leg, and the gastrocnemius and soleus in the calf. These 
+            muscles contract in a sequence that creates the pedaling action.</p>
+          <p class="card-text"><small class="text-muted">600 calories per hour</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="card-group" id="obexgym" style="display: none;">
+      <div class="card excard gw">
+        <img class="card-img-top" src="https://thumbs.dreamstime.com/z/sport-man-doing-seated-cable-row-gym-illustration-low-cable-pulley-row-seated-fitness-instructor-demonstration-personal-trainer-130645726.jpg" alt="Cable machine rotation">
+        <div class="card-body">
+          <h5 class="card-title">Cable machine rotation</h5>
+          <p class="card-text">The cable machine targets the transverse abdominis muscle and 
+            the oblique muscles. These are the muscles that allow you to twist at the waist and not just your arms. 
+            This also engages the muscles of your back, shoulders, and legs.</p>
+          <p class="card-text"><small class="text-muted">10 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="https://img.my-best.ph/press_component/images/30db5512b0c8b0985f0b934ffec265e1.jpg?ixlib=rails-3.1.0&auto=compress&q=70&lossless=0&w=690&fit=max" alt="resistance band rotation">
+        <div class="card-body">
+          <h5 class="card-title">Resistance band rotation</h5>
+          <p class="card-text">If you want to feel a deep burn in your obliques, try the band 
+            core rotation. Twisting your torso against the resistance of an anchored elastic 
+            band will challenge each of the two dozen muscles that make up your core.</p>
+          <p class="card-text"><small class="text-muted">~200 calories per hour</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="https://media.gettyimages.com/photos/nancy-cole-demonstates-the-inverted-rows-on-the-smith-machine-that-picture-id112925382" alt="smith rows">
+        <div class="card-body">
+          <h5 class="card-title">Smith machine rows</h5>
+          <p class="card-text">The main muscles used are the latissimus dorsi (lats), which 
+            run down the sides of your upper back, trapezius (traps), and rhomboids 
+            (upper middle back). The barbell bent-over row also uses the back, glutes and 
+            legs to stabilise the body too.</p>
+          <p class="card-text"><small class="text-muted">100 calories per set</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="https://live.staticflickr.com/6168/6178463209_83d7e6b603_b.jpg" alt="trx">
+        <div class="card-body">
+          <h5 class="card-title">TRX rows</h5>
+          <p class="card-text">The TRX row hits all the major muscle groups of the back—the 
+            lats, rhomboids, and traps—as well as the shoulders and the core.</p>
+          <p class="card-text"><small class="text-muted">60 calories per minute</small></p>
+        </div>
+      </div>
+      <div class="card excard gw">
+        <img class="card-img-top" src="https://i.ytimg.com/vi/Am3DRsd8o1k/maxresdefault.jpg" alt="smith pushup">
+        <div class="card-body">
+          <h5 class="card-title">Smith machine push ups</h5>
+          <p class="card-text">The incline position primarily works your chest muscles, 
+            but you'll also need to engage your core muscles to protect your back.</p>
+          <p class="card-text"><small class="text-muted">7 calories per minute</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="exlist">
+      <ol id="underexhomelist" style="display: none;">
+        <li>Wide press up</li>
+        <li>Spiderman press up</li>
+        <li>Diamond press up</li>
+        <li>One arm press up</li>
+        <li>Knee down press up</li>
+      </ol>
+      <ol id="underexgymlist" style="display: none;">
+        <li>Barbell shrugs</li>
+        <li>Dumbbell raises</li>
+        <li>Bench press</li>
+        <li>Bent over rows</li>
+        <li>Deadlift</li>
+      </ol>
+      <ol id="overexhomelist" style="display: none;">
+        <li>Jumping lunges</li>
+        <li>Cross lunge combo</li>
+        <li>Star jumps</li>
+        <li>Knee down push up</li>
+        <li>Single leg hip thrust</li>
+      </ol>
+      <ol id="overexgymlist" style="display: none;">
+        <li>Burpee</li>
+        <li>Med ball slams</li>
+        <li>Back squat</li>
+        <li>Battle ropes</li>
+        <li>Jumping rope</li>
+      </ol>
+      <ol id="obexhomelist" style="display: none;">
+        <li>Swimming</li>
+        <li>Walking</li>
+        <li>Cycling</li>
+        <li>Jumping rope</li>
+        <li>Stretching</li>
+      </ol>
+      <ol id="obexgymlist" style="display: none;">
+        <li>TRX rows</li>
+        <li>Smith machine push ups</li>
+        <li>Resistance band rotation</li>
+        <li>Cable machine rotation</li>
+        <li>Smith machine rows</li>
+      </ol>
+    </div>
+    <div class="dieting">
+      <h5 class="display-3" style="float:right; font-weight: 400; margin-right: 5%; margin-top: 2%; display: inline;">Diet</h5>
+  <div class="card" id="dietcard" style="background-color: rgba(219, 68, 99, 0.74);">
+    <div class="card-body">
+      <p class="card-text">These are some of the home made diets you should be having.</p>
+    </div>
+    <span id="underweightfooditems" style="display: none;">
+    <ul class="list-group list-group-flush" id="underweightfood" style="display: none;">
+      <li class="list-group-item">Milk</li>
+      <li class="list-group-item">Rice</li>
+      <li class="list-group-item">Protein Shake</li>
+      <li class="list-group-item">Red Meat</li>
+      <li class="list-group-item">Nuts</li>
+    </ul>
+    <ul class="list-group list-group-flush" id="underweightfoodsubs" style="display: none;">
+      <li class="list-group-item">Whole grain breads</li>
+      <li class="list-group-item">Salmon</li>
+      <li class="list-group-item">Dry fruits</li>
+      <li class="list-group-item">Avocados</li>
+      <li class="list-group-item">Dark Chocolate</li>
+    </ul>
+  </span>
+  <span id="normalfooditems" style="display: none;">
+    <ul class="list-group list-group-flush" id="normalfood" style="display: none;">
+      <li class="list-group-item">Eggs</li>
+      <li class="list-group-item">Almonds</li>
+      <li class="list-group-item">Chicken breast</li>
+      <li class="list-group-item">Oats</li>
+      <li class="list-group-item">Milk</li>
+    </ul>
+    <ul class="list-group list-group-flush" id="normalfoodsubs" style="display: none;">
+      <li class="list-group-item">Cottage Cheese</li>
+      <li class="list-group-item">Greek Yogurt</li>
+      <li class="list-group-item">Lentils</li>
+      <li class="list-group-item">Pumpkin seeds</li>
+      <li class="list-group-item">Sprouts</li>
+    </ul>
+  </span>
+  <span id="overfooditems" style="display: none;">
+    <ul class="list-group list-group-flush" id="overfood" style="display: none;">
+      <li class="list-group-item">Whole Eggs</li>
+      <li class="list-group-item">Leafy greens</li>
+      <li class="list-group-item">Green vegetables</li>
+      <li class="list-group-item">Beans</li>
+      <li class="list-group-item">Soup</li>
+    </ul>
+    <ul class="list-group list-group-flush" id="overfoodsubs" style="display: none;">
+      <li class="list-group-item">Avocados</li>
+      <li class="list-group-item">Nuts</li>
+      <li class="list-group-item">Whole grains</li>
+      <li class="list-group-item">Chilli pepper</li>
+      <li class="list-group-item">Fruits</li>
+    </ul>
+  </span>
+  <span id="obesefooditems" style="display: none;">
+    <ul class="list-group list-group-flush" id="obesefood" style="display: none;">
+      <li class="list-group-item">Seeds</li>
+      <li class="list-group-item">Leafy greens</li>
+      <li class="list-group-item">Green vegetables</li>
+      <li class="list-group-item">Beans</li>
+      <li class="list-group-item">Soup</li>
+    </ul>
+    <ul class="list-group list-group-flush" id="obesefoodsubs" style="display: none;">
+      <li class="list-group-item">Avocados</li>
+      <li class="list-group-item">Nuts</li>
+      <li class="list-group-item">Plant oils</li>
+    </ul>
+  </span>
+    <div class="card-body">
+      <button type="button" class="btn btn-outline-dark" id="foodsub" onclick="foodswap()">Substitutes</button>
+    </div>
+  </div>
+  <p style="width: 30%; color: white; display: inline-block; text-align: right; transform: translate(20%, -25%);">The food we eat plays an essential role in how we look and 
+    feel. Regular exercise is important but nutrition has the largest impact on our fitness. 
+    Making food as our medicine has become a popular craze for health improvement. The current 
+    trend focuses on healthy food intake as a primary fitness goal. When healthy eating habits 
+    become a lifestyle, we eventually become healthier and happier. Eating right allows us to 
+    reduce body fat, feel more confident and reduce our risk of illness.</p>
+  <div class="card" id="swedist" style="background-color: rgb(6, 189, 189);">
+    <div class="card-body">
+      <h5 class="card-title" style="text-align: center; font-weight: 400;">Sleep work exercise distribution</h5>
+      <div class="progress">
+        <div class="progress-bar" id="sleepbar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Sleep</div>
+        <div class="progress-bar bg-success" id="workbar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Work</div>
+        <div class="progress-bar bg-warning" id="exbar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="color: black;">Exercise</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollTrigger.min.js"></script>
+      <script>
+      let tl = gsap.timeline({
+        scrollTrigger:{
+            trigger:'#exercise',
+        }
+    });
+    tl.from("exercise",{x:200, opacity:0, duration: 1.5});
+  </script>
+      <script src="main.js"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>
